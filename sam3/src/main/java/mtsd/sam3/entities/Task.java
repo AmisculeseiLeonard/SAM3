@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Task {
@@ -17,8 +20,11 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@NotBlank(message = "Task name is mandatory")
+	@Size(max = 100)
 	private String taskName;
 	
+	@Size(max = 500)
 	private String taskDescription;
 	
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
@@ -37,6 +43,7 @@ public class Task {
 	@JoinColumn(name = "severity_id")
 	private Severity severity;
 	
+	@Future(message = "Due date cannot be a past date")
 	private Date dueDate;
 	
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})

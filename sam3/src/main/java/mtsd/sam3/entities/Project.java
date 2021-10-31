@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Project {
@@ -23,12 +25,15 @@ public class Project {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@NotBlank(message = "Project name is mandatory")
+	@Size(max = 100)
 	private String projectName;
 	
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "product_id")
 	private Product product;
 	
+	@Size(max = 500)
 	private String description;
 	
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
@@ -44,6 +49,14 @@ public class Project {
 	
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Task> tasks;
+	
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name = "build_release_id")
+	private Release buildRelease;
+	
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name = "finish_release_id")
+	private Release finishRelease;
 	
 	private Date finishDevelop;
 	
@@ -165,6 +178,24 @@ public class Project {
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
+
+	public Release getBuildRelease() {
+		return buildRelease;
+	}
+
+	public void setBuildRelease(Release buildRelease) {
+		this.buildRelease = buildRelease;
+	}
+
+	public Release getFinishRelease() {
+		return finishRelease;
+	}
+
+	public void setFinishRelease(Release finishRelease) {
+		this.finishRelease = finishRelease;
+	}
+	
+	
 	
 	 
 	

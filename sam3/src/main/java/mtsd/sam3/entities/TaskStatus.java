@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class TaskStatus {
@@ -11,6 +13,8 @@ public class TaskStatus {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@NotBlank(message = "Task status name is mandatory")
+	@Size(max = 100)
 	private String taskStatusName;
 
 	public TaskStatus() {

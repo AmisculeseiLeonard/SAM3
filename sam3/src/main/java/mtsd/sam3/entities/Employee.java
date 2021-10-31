@@ -1,6 +1,7 @@
 package mtsd.sam3.entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Formula;
+
 
 @Entity
 public class Employee {
@@ -22,18 +30,33 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@NotBlank(message = "First name is mandatory")
+	@Size(max = 100)
 	@Column(name = "first_name")
 	private String firstName;
 	
+	@NotBlank(message = "Last name is mandatory")
+	@Size(max = 100)
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "role_id")
 	private Role role;
 	
+	@NotBlank(message = "Phone number is mandatory")
 	private String phoneNumber;
+	
+	@NotBlank(message = "Email is mandatory")
+	@Email(message = "The format of email is invalid")
 	private String email;
+	
+	@Past
+	@Column(name = "birth_date")
+	private Date birthDate;
+	
+//	@Formula("(DATEDIFF(year, birth_date, current_date))")
+//	private String age;
 	
 	@ManyToMany(fetch = FetchType.LAZY,
 			cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
@@ -48,11 +71,12 @@ public class Employee {
 	}
 	
 	
-	public Employee(String firstName, String lastName, String phoneNumber, String email) {
+	public Employee(String firstName, String lastName, String phoneNumber, String email, Date birthDate) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
+		this.birthDate = birthDate;
 	}
 	
 	public void addTeam(Team team) {
@@ -106,6 +130,13 @@ public class Employee {
 	public void setTeams(List<Team> teams) {
 		this.teams = teams;
 	}
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+	
 	
 	
 }

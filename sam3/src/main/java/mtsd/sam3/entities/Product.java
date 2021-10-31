@@ -1,9 +1,16 @@
 package mtsd.sam3.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Product {
@@ -12,10 +19,14 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@NotBlank(message = "Product name is mandatory")
+	@Size(max = 100)
 	private String productName;
 	
-	private String version;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+	private List<Release> releases;
 	
+	@Size(max = 500)
 	private String description;
 
 	
@@ -23,13 +34,18 @@ public class Product {
 		super();
 	}
 
-	public Product(String productName, String version, String description) {
+	public Product(String productName, String description) {
 		super();
 		this.productName = productName;
-		this.version = version;
 		this.description = description;
 	}
 
+	public void addRelease(Release release) {
+		if(releases == null) {
+			releases = new ArrayList<Release>();
+		}
+		releases.add(release);
+	}
 
 	public int getId() {
 		return id;
@@ -56,13 +72,17 @@ public class Product {
 		this.description = description;
 	}
 
-	public String getVersion() {
-		return version;
+	public List<Release> getReleases() {
+		return releases;
 	}
 
-	public void setVersion(String version) {
-		this.version = version;
+	public void setReleases(List<Release> releases) {
+		this.releases = releases;
 	}
+	
+	
+
+	
 	
 	
 	
