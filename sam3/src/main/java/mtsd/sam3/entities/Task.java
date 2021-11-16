@@ -58,8 +58,12 @@ public class Task {
 		super();
 	}
 
-	public Task(String taskName, String taskDescription, TaskType taskType, TaskStatus taskStatus, Priority priority,
-			Severity severity, Date dueDate, Employee assignedEmployee) {
+	
+
+	public Task(@NotBlank(message = "Task name is mandatory") @Size(max = 100) String taskName,
+			@Size(max = 500) String taskDescription, TaskType taskType, TaskStatus taskStatus, Priority priority,
+			Severity severity, @Future(message = "Due date cannot be a past date") Date dueDate,
+			Employee assignedEmployee, Project project) {
 		super();
 		this.taskName = taskName;
 		this.taskDescription = taskDescription;
@@ -69,7 +73,10 @@ public class Task {
 		this.severity = severity;
 		this.dueDate = dueDate;
 		this.assignedEmployee = assignedEmployee;
+		this.project = project;
 	}
+
+
 
 	public int getId() {
 		return id;

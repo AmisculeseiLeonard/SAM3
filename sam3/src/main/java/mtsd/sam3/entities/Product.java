@@ -34,11 +34,14 @@ public class Product {
 		super();
 	}
 
-	public Product(String productName, String description) {
+
+	public Product(@NotBlank(message = "Product name is mandatory") @Size(max = 100) String productName,
+			@Size(max = 500) String description) {
 		super();
 		this.productName = productName;
 		this.description = description;
 	}
+
 
 	public void addRelease(Release release) {
 		if(releases == null) {

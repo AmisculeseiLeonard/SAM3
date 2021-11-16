@@ -25,7 +25,7 @@ public class Release {
 	@Size(max = 500)
 	private String description;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "product_id")
 	private Product product;
 	
@@ -34,13 +34,19 @@ public class Release {
 		super();
 	}
 
-	public Release(String version, String servicePack, String description, Product product) {
+	
+
+	public Release(@NotBlank(message = "Version cannot be null") String version,
+			@NotBlank(message = "Service pack cannot be null") String servicePack, @Size(max = 500) String description,
+			Product product) {
 		super();
 		this.version = version;
 		this.servicePack = servicePack;
 		this.description = description;
 		this.product = product;
 	}
+
+
 
 	public int getId() {
 		return id;

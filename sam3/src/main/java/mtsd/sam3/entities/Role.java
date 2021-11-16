@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -18,12 +19,20 @@ public class Role {
 	@Size(max = 100)
 	private String roleName;
 	
+	@NotNull
+	private boolean upperManagement;
+	
 	public Role() {}
 
-	public Role(String roleName) {
+
+	public Role(@NotBlank(message = "Role name is mandatory") @Size(max = 100) String roleName,
+			@NotNull boolean upperManagement) {
 		super();
 		this.roleName = roleName;
+		this.upperManagement = upperManagement;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -39,6 +48,14 @@ public class Role {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public boolean isUpperManagement() {
+		return upperManagement;
+	}
+
+	public void setUpperManagement(boolean upperManagement) {
+		this.upperManagement = upperManagement;
 	}
 	
 	

@@ -1,9 +1,11 @@
 package mtsd.sam3.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,12 +22,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Formula;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 @Entity
-public class Employee {
+public class Employee implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -40,7 +47,7 @@ public class Employee {
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "role_id")
 	private Role role;
 	
@@ -63,13 +70,13 @@ public class Employee {
 	@JoinTable(name = "team_members",
 	joinColumns = @JoinColumn(name="employee_id"),
 	inverseJoinColumns = @JoinColumn(name ="team_id"))
+	@JsonIgnore
 	private List<Team> teams;
 	
 	
 	public Employee() {
 		super();
 	}
-	
 	
 	public Employee(String firstName, String lastName, String phoneNumber, String email, Date birthDate) {
 		this.firstName = firstName;
@@ -124,17 +131,24 @@ public class Employee {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+	
 	public List<Team> getTeams() {
 		return teams;
 	}
+
 	public void setTeams(List<Team> teams) {
 		this.teams = teams;
 	}
+
 	public Date getBirthDate() {
 		return birthDate;
 	}
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	

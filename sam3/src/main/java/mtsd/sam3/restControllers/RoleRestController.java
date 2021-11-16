@@ -14,7 +14,7 @@ import mtsd.sam3.repository.RoleRepository;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
-public class RoleRestRepository {
+public class RoleRestController {
 	
 	@Autowired
 	private RoleRepository roleRepository;

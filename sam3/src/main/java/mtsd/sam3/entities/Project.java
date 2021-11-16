@@ -29,19 +29,19 @@ public class Project {
 	@Size(max = 100)
 	private String projectName;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "product_id")
 	private Product product;
 	
 	@Size(max = 500)
 	private String description;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "build_priority_id")
 	private BuildPriority buildPriority;
 	
 	@ManyToMany(fetch = FetchType.LAZY,
-			cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+			cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinTable(name = "team_project",
 	joinColumns = @JoinColumn(name="project_id"),
 	inverseJoinColumns = @JoinColumn(name ="team_id"))
@@ -50,11 +50,11 @@ public class Project {
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Task> tasks;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "build_release_id")
 	private Release buildRelease;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "finish_release_id")
 	private Release finishRelease;
 	
@@ -70,13 +70,19 @@ public class Project {
 		super();
 	}
 
-	public Project(String projectName, Product product, String description, BuildPriority buildPriority) {
+	
+	
+	public Project(@NotBlank(message = "Project name is mandatory") @Size(max = 100) String projectName,
+			Product product, @Size(max = 500) String description, BuildPriority buildPriority) {
+		super();
 		this.projectName = projectName;
 		this.product = product;
 		this.description = description;
 		this.buildPriority = buildPriority;
 	}
-	
+
+
+
 	public void addTeam(Team team) {
 		if(teams == null) {
 			teams = new ArrayList<Team>();

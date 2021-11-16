@@ -21,10 +21,14 @@ public class Priority {
 		super();
 	}
 
-	public Priority(String priorityName) {
+	
+
+	public Priority(@NotBlank(message = "Priority field is mandatory") @Size(max = 50) String priorityName) {
 		super();
 		this.priorityName = priorityName;
 	}
+
+
 
 	public int getId() {
 		return id;

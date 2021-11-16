@@ -22,10 +22,12 @@ public class TaskType {
 		super();
 	}
 
-	public TaskType(String taskTypeName) {
+
+	public TaskType(@NotBlank(message = "Task type  is mandatory") @Size(max = 100) String taskTypeName) {
 		super();
 		this.taskTypeName = taskTypeName;
 	}
+
 
 	public int getId() {
 		return id;

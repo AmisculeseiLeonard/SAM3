@@ -21,10 +21,13 @@ public class TaskStatus {
 		super();
 	}
 
-	public TaskStatus(String taskStatusName) {
+	
+
+	public TaskStatus(@NotBlank(message = "Task status name is mandatory") @Size(max = 100) String taskStatusName) {
 		super();
 		this.taskStatusName = taskStatusName;
 	}
+
 
 	public int getId() {
 		return id;

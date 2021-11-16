@@ -22,10 +22,14 @@ public class Severity {
 		super();
 	}
 
-	public Severity(String severityName) {
+	
+
+	public Severity(@NotBlank(message = "Severity field is mandatory") @Size(max = 50) String severityName) {
 		super();
 		this.severityName = severityName;
 	}
+
+
 
 	public int getId() {
 		return id;
