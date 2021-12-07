@@ -14,6 +14,6 @@ public class TeamControllerAspect {
 	@After("execution(* mtsd.sam3.restControllers.TeamRestController.createTeam(..)) && args(team,..)")
 	public void addTeamToEmployees(JoinPoint joinPoint, Team team) {
 		team.getEmployees().forEach(member -> member.addTeam(team));
-		team.getEmployees().forEach(member -> System.out.println(member.getTeams().contains(team)));
+		//team.getEmployees().forEach(member -> System.out.println(member.getTeams().contains(team)));
 	}
 }

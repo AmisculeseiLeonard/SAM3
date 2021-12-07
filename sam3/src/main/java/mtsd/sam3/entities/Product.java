@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Product {
 	
@@ -24,6 +27,7 @@ public class Product {
 	private String productName;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+	@JsonManagedReference
 	private List<Release> releases;
 	
 	@Size(max = 500)
@@ -50,20 +54,34 @@ public class Product {
 		releases.add(release);
 	}
 
+
 	public int getId() {
 		return id;
 	}
+
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
+
 	public String getProductName() {
 		return productName;
 	}
 
+
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+
+	public List<Release> getReleases() {
+		return releases;
+	}
+
+
+	public void setReleases(List<Release> releases) {
+		this.releases = releases;
 	}
 
 
@@ -71,17 +89,12 @@ public class Product {
 		return description;
 	}
 
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public List<Release> getReleases() {
-		return releases;
-	}
-
-	public void setReleases(List<Release> releases) {
-		this.releases = releases;
-	}
+	
 	
 	
 

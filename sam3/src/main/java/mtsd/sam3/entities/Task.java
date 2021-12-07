@@ -13,6 +13,8 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Task {
 	
@@ -27,31 +29,32 @@ public class Task {
 	@Size(max = 500)
 	private String taskDescription;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "task_type_id")
 	private TaskType taskType;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "task_status_id")
 	private TaskStatus taskStatus;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "priority_id")
-	private Priority priority; 
+	private BuildPriority priority; 
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "severity_id")
 	private Severity severity;
 	
 	@Future(message = "Due date cannot be a past date")
 	private Date dueDate;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "assigned_employee_id")
 	private Employee assignedEmployee;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "project_id")
+	@JsonBackReference
 	private Project project;
 
 	public Task() {
@@ -61,7 +64,7 @@ public class Task {
 	
 
 	public Task(@NotBlank(message = "Task name is mandatory") @Size(max = 100) String taskName,
-			@Size(max = 500) String taskDescription, TaskType taskType, TaskStatus taskStatus, Priority priority,
+			@Size(max = 500) String taskDescription, TaskType taskType, TaskStatus taskStatus, BuildPriority priority,
 			Severity severity, @Future(message = "Due date cannot be a past date") Date dueDate,
 			Employee assignedEmployee, Project project) {
 		super();
@@ -118,11 +121,12 @@ public class Task {
 		this.taskStatus = taskStatus;
 	}
 
-	public Priority getPriority() {
+
+	public BuildPriority getPriority() {
 		return priority;
 	}
 
-	public void setPriority(Priority priority) {
+	public void setPriority(BuildPriority priority) {
 		this.priority = priority;
 	}
 

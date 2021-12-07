@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import mtsd.sam3.domainServices.ProductServices;
 import mtsd.sam3.entities.Product;
+import mtsd.sam3.entities.Release;
 import mtsd.sam3.exeption.ResourceNotFoundException;
 import mtsd.sam3.repository.ProductRepository;
 
@@ -46,6 +49,17 @@ public class ProductRestController {
 		return ResponseEntity.ok(product);
 	}
 	
+	@GetMapping("products/{id}/latestRelease")
+	public ResponseEntity<Release> getLastestRelease(@PathVariable int id) {
+		Product product = productRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException("Product with id: " + id + " doesn't exist"));
+		
+		Release release = ProductServices.getLatestRelease(product);
+		
+		return ResponseEntity.ok(release);
+	}
+	
+	
 	@PutMapping("/products/{id}")
 	public ResponseEntity<Product> updateProduct(@PathVariable int id,@RequestBody @Valid Product productDetails) {
 		Product product = productRepository.findById(id).
@@ -54,7 +68,8 @@ public class ProductRestController {
 		product.setId(productDetails.getId());
 		product.setDescription(productDetails.getDescription());
 		product.setProductName(productDetails.getProductName());
-		product.setReleases(productDetails.getReleases());
+		if(!productDetails.getReleases().isEmpty())
+			product.setReleases(productDetails.getReleases());
 		
 		Product updatedProduct = productRepository.save(product);
 		return ResponseEntity.ok(updatedProduct);

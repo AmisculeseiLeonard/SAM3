@@ -1,10 +1,10 @@
 package mtsd.sam3.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,11 +27,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
-
 @Entity
-public class Employee implements Serializable{
+public class Employee {
 	
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -147,8 +145,25 @@ public class Employee implements Serializable{
 		this.birthDate = birthDate;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(birthDate, email, firstName, id, lastName, phoneNumber, role, teams);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		return Objects.equals(birthDate, other.birthDate) && Objects.equals(email, other.email)
+				&& Objects.equals(firstName, other.firstName) && id == other.id
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(phoneNumber, other.phoneNumber)
+				&& Objects.equals(role, other.role) && Objects.equals(teams, other.teams);
 	}
 	
 	

@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import mtsd.sam3.entities.Employee;
+import mtsd.sam3.entities.Project;
 import mtsd.sam3.entities.Team;
 import mtsd.sam3.exeption.ResourceNotFoundException;
 import mtsd.sam3.repository.TeamRepository;
@@ -37,8 +40,6 @@ public class TeamRestController {
 	@PostMapping("/teams")
 	public Team createTeam(@RequestBody @Valid Team team) {
 		Team savedTeam =  teamRepository.save(team);
-		System.out.println( team.getEmployees());
-		//savedTeam.getEmlpoyees().forEach(employee -> employee.addTeam(savedTeam));
 		return savedTeam;
 	}
 	
@@ -47,6 +48,14 @@ public class TeamRestController {
 		Team team = teamRepository.findById(id).
 				orElseThrow(() -> new ResourceNotFoundException("Team with id: " + id + " doesn't exist"));
 		return ResponseEntity.ok(team);
+	}
+	
+	@GetMapping("teams/{id}/projects")
+	public ResponseEntity<List<Project>> getEmployeeTeamsById(@PathVariable int id) {
+		Team team = teamRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException("Employee with id: " + id + " doesn't exist"));
+		
+		return ResponseEntity.ok(team.getProjects());
 	}
 	
 	@PutMapping("/teams/{id}")
@@ -65,7 +74,7 @@ public class TeamRestController {
 		
 	}
 	
-	@DeleteMapping("/Team/{id}")
+	@DeleteMapping("/teams/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteTeam(@PathVariable int id) {
 		Team product = teamRepository.findById(id).
 				orElseThrow(() -> new ResourceNotFoundException("Team with id: " + id + " doesn't exist"));

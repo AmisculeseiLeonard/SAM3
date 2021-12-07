@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import mtsd.sam3.entities.Product;
 import mtsd.sam3.entities.Release;
 import mtsd.sam3.exeption.ResourceNotFoundException;
+import mtsd.sam3.repository.ProductRepository;
 import mtsd.sam3.repository.ReleaseRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -29,15 +32,33 @@ public class ReleaseRestController {
 	@Autowired
 	private ReleaseRepository releaseRepository;
 	
+	@Autowired
+	private ProductRepository productRepository; 
+	
 	@GetMapping("/releases")
 	public List<Release> getAllReleases(){
 		return releaseRepository.findAll();
 	}
 	
+	@GetMapping("/releasesByProductId/{id}")
+	public List<Release> getReleasesByProductId(@PathVariable int id){
+		return releaseRepository.findByProductId(id);
+	}
+	
 	@PostMapping("/releases")
-	public Release createRelease(@RequestBody @Valid Release release) {
+	public Release createRelease(@RequestBody @Valid Release release, Integer productId) {
 		return releaseRepository.save(release);
 	}
+	
+	@PostMapping("/releases/{id}")
+	public Release createReleaseForSpecificProduct(@PathVariable int id, @RequestBody @Valid Release release) {
+		Product product = productRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException("Product with id: " + id + " doesn't exist"));
+		product.addRelease(release);
+		release.setProduct(product);
+		return releaseRepository.save(release);
+	}
+	
 	
 	@GetMapping("releases/{id}")
 	public ResponseEntity<Release> getReleaseById(@PathVariable int id) {

@@ -41,7 +41,7 @@ public class Team implements Serializable{
 	@Size(max = 250)
 	private String teamDescription;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "leader_id")
 	private Employee teamLeader;
 	
@@ -58,6 +58,7 @@ public class Team implements Serializable{
 	@JoinTable(name = "team_project",
 	joinColumns = @JoinColumn(name="team_id"),
 	inverseJoinColumns = @JoinColumn(name ="project_id"))
+	@JsonIgnore
 	private List<Project> projects;
 	
 
